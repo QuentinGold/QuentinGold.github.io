@@ -1,64 +1,69 @@
-let myImage = document.querySelector('img');
+let randomNumber = Math.floor(Math.random() * 100) + 1;
 
-myImage.addEventListener('click', function() {
-    let mySrc = myImage.getAttribute('src');
-    if (mySrc === 'images/image-google.png') {
-      myImage.setAttribute('src', 'images/image-google2.png');
-    } else {
-      myImage.setAttribute('src', 'images/image-google.png');
-    }
-});
-let myButton = document.querySelector('button');
-let myHeading = document.querySelector('h1');
-function setUserName() {
-  let myName = prompt('Veuillez saisir votre nom.');
-  localStorage.setItem('nom', myName);
-  myHeading.textContent = 'Gooogle est cool, ' + myName;
-}
-if (!localStorage.getItem('nom')) {
-  setUserName();
-} else {
-  let storedName = localStorage.getItem('nom');
-  myHeading.textContent = 'Google est cool, ' + storedName;
-}
-myButton.addEventListener('click', function() {
-  setUserName();
-});
-// Image switcher code
+let guesses = document.querySelector('.guesses');
+let lastResult = document.querySelector('.lastResult');
+let lowOrHi = document.querySelector('.lowOrHi');
 
-/*let myImage = document.querySelector('img');
+let guessSubmit = document.querySelector('.guessSubmit');
+let guessField = document.querySelector('.guessField');
 
-myImage.onclick = function() {
-  let mySrc = myImage.getAttribute('src');
-  if(mySrc === 'images/image-google.png') {
-    myImage.setAttribute ('src','images/image-google2.png');
-  } else {
-    myImage.setAttribute ('src','images/image-google.png');
+let guessCount = 1;
+let resetButton;
+function checkGuess(){
+  let userGuess = Number(guessField.value);
+  if (guessCount === 1) {
+    guesses.textContent = 'Propositions précédentes : ';
   }
-}
-
-// Personalized welcome message code
-
-let myButton = document.querySelector('button');
-let myHeading = document.querySelector('h1');
-
-function setUserName() {
-  let myName = prompt('Please enter your name.');
-  if(!myName || myName === null) {
-    setUserName();
+  guesses.textContent += userGuess + ' ';
+ 
+  if (userGuess === randomNumber) {
+    lastResult.textContent = 'Bravo, vous avez trouvé le nombre !';
+    lastResult.style.backgroundColor = 'green';
+    lowOrHi.textContent = '';
+    setGameOver();
+  } else if (guessCount === 10) {
+     lastResult.textContent = '!!! PERDU !!!';
+	 //lastResult.style.backgroundColor = 'red';
+     setGameOver();
   } else {
-    localStorage.setItem('name', myName);
-    myHeading.innerHTML = 'Mozilla is cool, ' + myName;
+     lastResult.textContent = 'Faux !';
+     lastResult.style.backgroundColor = 'red';
+     if (userGuess < randomNumber) {
+      lowOrHi.textContent = 'Le nombre saisi est trop petit !';
+     } else if (userGuess > randomNumber) {
+      lowOrHi.textContent = 'Le nombre saisi est trop grand !';
+     }
   }
+ 
+  guessCount++;
+  guessField.value = '';
+  guessField.focus();
 }
-
-if(!localStorage.getItem('name')) {
-  setUserName();
-} else {
-  let storedName = localStorage.getItem('name');
-  myHeading.innerHTML = 'Mozilla is cool, ' + storedName;
+function setGameOver() {
+  guessField.disabled = true;
+  guessSubmit.disabled = true;
+  resetButton = document.createElement('button');
+  resetButton.textContent = 'Start new game';
+  document.body.appendChild(resetButton);
+  resetButton.addEventListener('click', resetGame);
 }
+function resetGame() {
+  guessCount = 1;
 
-myButton.onclick = function() {
-  setUserName();
-}*/
+  let resetParas = document.querySelectorAll('.resultParas p');
+  for (let i = 0 ; i < resetParas.length ; i++) {
+    resetParas[i].textContent = '';
+  }
+
+  resetButton.parentNode.removeChild(resetButton);
+
+  guessField.disabled = false;
+  guessSubmit.disabled = false;
+  guessField.value = '';
+  guessField.focus();
+
+  lastResult.style.backgroundColor = 'white';
+
+  randomNumber = Math.floor(Math.random() * 100) + 1;
+}
+guessSubmit.addEventListener('click',checkGuess)
