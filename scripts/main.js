@@ -1,69 +1,43 @@
-let randomNumber = Math.floor(Math.random() * 100) + 1;
-
-let guesses = document.querySelector('.guesses');
-let lastResult = document.querySelector('.lastResult');
-let lowOrHi = document.querySelector('.lowOrHi');
-
-let guessSubmit = document.querySelector('.guessSubmit');
-let guessField = document.querySelector('.guessField');
-
-let guessCount = 1;
-let resetButton;
-function checkGuess(){
-  let userGuess = Number(guessField.value);
-  if (guessCount === 1) {
-    guesses.textContent = 'Propositions précédentes : ';
-  }
-  guesses.textContent += userGuess + ' ';
- 
-  if (userGuess === randomNumber) {
-    lastResult.textContent = 'Bravo, vous avez trouvé le nombre !';
-    lastResult.style.backgroundColor = 'green';
-    lowOrHi.textContent = '';
-    setGameOver();
-  } else if (guessCount === 10) {
-     lastResult.textContent = '!!! PERDU !!!';
-	 //lastResult.style.backgroundColor = 'red';
-     setGameOver();
-  } else {
-     lastResult.textContent = 'Faux !';
-     lastResult.style.backgroundColor = 'red';
-     if (userGuess < randomNumber) {
-      lowOrHi.textContent = 'Le nombre saisi est trop petit !';
-     } else if (userGuess > randomNumber) {
-      lowOrHi.textContent = 'Le nombre saisi est trop grand !';
-     }
-  }
- 
-  guessCount++;
-  guessField.value = '';
-  guessField.focus();
+let joueurActuel = 0
+const marqueur = {
+    0: '\u274c',
+    1: '\ud83d\udd18'
 }
-function setGameOver() {
-  guessField.disabled = true;
-  guessSubmit.disabled = true;
-  resetButton = document.createElement('button');
-  resetButton.textContent = 'Start new game';
-  document.body.appendChild(resetButton);
-  resetButton.addEventListener('click', resetGame);
+
+function listener(x,i){
+    x.addEventListener('click', function(){
+        console.log(joueurActuel)
+        console.log(x.textContent)
+        console.log(typeof x.textContent)
+        console.log(x.textContent === marqueur[0])
+            if (x.textContent !== marqueur[1] && x.textContent !== marqueur[0]){
+                x.textContent = marqueur[joueurActuel]
+            }
+            else if(x.textContent === marqueur[joueurActuel]){
+                x.textContent = ''
+            }
+        
+    })
 }
-function resetGame() {
-  guessCount = 1;
+const boxes = document.querySelectorAll('.box')
+boxes.forEach(listener)
 
-  let resetParas = document.querySelectorAll('.resultParas p');
-  for (let i = 0 ; i < resetParas.length ; i++) {
-    resetParas[i].textContent = '';
-  }
 
-  resetButton.parentNode.removeChild(resetButton);
 
-  guessField.disabled = false;
-  guessSubmit.disabled = false;
-  guessField.value = '';
-  guessField.focus();
+const boutonFin = document.querySelector('button')
+boutonFin.addEventListener('click', function(){
+    changementJoueur()
+})
 
-  lastResult.style.backgroundColor = 'white';
+function changementJoueur(){
+    let messageJoueur = document.querySelector('p')
+    if (joueurActuel === 0){
+        messageJoueur.textContent = 'Au joueur 2 de jouer !!'
+        joueurActuel = 1
+    }
+    else {
+        messageJoueur.textContent = 'Au joueur 1 de jouer !!'
+        joueurActuel = 0
+    }
 
-  randomNumber = Math.floor(Math.random() * 100) + 1;
 }
-guessSubmit.addEventListener('click',checkGuess)

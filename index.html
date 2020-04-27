@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <link href="styles/style.css" rel="stylesheet" type="text/css">
     <meta charset="utf-8">
-
-    <title>Number guessing game</title>
-
-    <style>
-	
-    </style>
   </head>
-
+  <link href="styles/style.css" rel="stylesheet">
   <body>
-    <h1>Number guessing game</h1>
+    <h1>Jeu de morpion</h1>
+    
+    <div class="wrapper">
+        <div class="box box1 center"></div>
+        <div class="box box2 center"></div>
+        <div class="box box3 center"></div>
+        <div class="box box4 center"></div>
+        <div class="box box5 center"></div>
+        <div class="box box6 center"></div>
+        <div class="box box7 center"></div>
+        <div class="box box8 center"></div>
+        <div class="box box9 center"></div>
+      </div>
 
-    <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. We'll tell you if your guess was too high or too low.</p>
-
-    <div class="form">
-      <label for="guessField">Enter a guess: </label><input type="text" id="guessField" class="guessField">
-      <input type="submit" value="Submit guess" class="guessSubmit">
-    </div>
-
-    <div class="resultParas">
-      <p class="guesses"></p>
-      <p class="lastResult"></p>
-      <p class="lowOrHi"></p>
-    </div>
-
-   <script src="scripts/main.js"></script>
+      <p>Au joueur 1 de jouer !!</p>
+      <button>Fin Tour</button>
+  <script src="scripts/main.js"></script>
   </body>
-</html>
+ </html>
